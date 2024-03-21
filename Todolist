@@ -1,0 +1,108 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class TaskManager {
+
+    private static ArrayList<Task> tasks = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter a command (add, remove, list, or exit):");
+            String command = scanner.nextLine();
+
+            if (command.equals("add")) {
+                addTask(scanner);
+            } else if (command.equals("remove")) {
+                removeTask(scanner);
+            } else if (command.equals("list")) {
+                listTasks();
+            } else if (command.equals("exit")) {
+                break;
+            } else {
+                System.out.println("Invalid command. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void addTask(Scanner scanner) {
+        System.out.println("Enter the name of the task:");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter the description of the task:");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter the due date of the task (yyyy-mm-dd):");
+        String dueDate = scanner.nextLine();
+
+        Task task = new Task(name, description, dueDate);
+        tasks.add(task);
+
+        System.out.println("Task added successfully.");
+    }
+
+    private static void removeTask(Scanner scanner) {
+        System.out.println("Enter the name of the task to remove:");
+        String name = scanner.nextLine();
+
+        Task task = findTaskByName(name);
+        if (task == null) {
+            System.out.println("Task not found.");
+        } else {
+            tasks.remove(task);
+            System.out.println("Task removed successfully.");
+        }
+    }
+
+    private static void listTasks() {
+        for (Task task : tasks) {
+            System.out.println(task);
+        }
+    }
+
+    private static Task findTaskByName(String name) {
+        for (Task task : tasks) {
+            if (task.getName().equals(name)) {
+                return task;
+            }
+        }
+        return null;
+    }
+}
+
+class Task {
+
+    private String name;
+    private String description;
+    private String dueDate;
+
+    public Task(String name, String description, String dueDate) {
+        this.name = name;
+        this.description = description;
+        this.dueDate = dueDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                '}';
+    }
+}
